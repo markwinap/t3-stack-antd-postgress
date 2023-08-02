@@ -55,6 +55,10 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 // Custom models
+enum Gender {
+    FEMALE
+    MALE
+}
 model Person {
     id        String   @id @default(cuid())
     name      String

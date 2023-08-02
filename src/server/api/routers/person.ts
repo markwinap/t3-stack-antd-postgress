@@ -8,8 +8,7 @@ import {
 
 const personSchema = z.object(
   {
-    fName: z.string(),
-    lName: z.string(),
+    name: z.string(),
     email: z.string(),
     //gender: z.nativeEnum(Gender),
   }
@@ -27,16 +26,22 @@ export const personRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.person.findMany();
   }),
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.person.findUnique({
+        where: { id: input.id },
+      });
+    }),
   create: protectedProcedure.input(personSchema).mutation(({ ctx, input }) => {
-    const { fName, lName, email, gender } = input;
+    const { name, email } = input;
 
     console.log("input", input);
     return ctx.prisma.person.create({
       data: {
-        fName,
-        lName,
+        name,
         email,
-        gender: Gender[gender],
+        //gender: Gender[gender],
       },
     });
   }),
