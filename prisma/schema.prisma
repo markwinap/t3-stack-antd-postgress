@@ -59,10 +59,18 @@ enum Gender {
     FEMALE
     MALE
 }
+model Child {
+    id        String   @id @default(cuid())
+    name  String
+    dob  DateTime
+    person Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+    personId String
+}
 model Person {
     id        String   @id @default(cuid())
     name      String
     email     String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    childs Child[]
 }

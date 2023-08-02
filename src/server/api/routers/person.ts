@@ -26,13 +26,13 @@ export const personRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.person.findMany();
   }),
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.person.findUnique({
-        where: { id: input.id },
-      });
-    }),
+  getById: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.prisma.person.findUnique({
+      where: {
+        id: input,
+      },
+    });
+  }),
   create: protectedProcedure.input(personSchema).mutation(({ ctx, input }) => {
     const { name, email } = input;
 

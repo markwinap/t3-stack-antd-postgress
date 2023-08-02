@@ -1,7 +1,7 @@
 import React from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { theme, Space, Input, Button, Form, Select, Tag } from 'antd';
+import { List, theme, Space, Input, Button, Form, Select, Tag } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import { type RouterOutputs, api } from "~/utils/api";
 //import { Gender } from "@prisma/client";
@@ -29,7 +29,7 @@ export default function Home() {
   const hello = api.person.hello.useQuery({ text: "from tRPC" });
   const { mutate, error } = api.person.create.useMutation();
   const { data: personData } = api.person.getAll.useQuery();
-
+  const { data: singlePersonData } = api.person.getById.useQuery('122');
 
   const {
     token: { colorBgContainer },
@@ -101,7 +101,6 @@ export default function Home() {
                   </Space>
                 </Form.Item>
               </Form>
-
             )
           }
           <Button onClick={sessionData ? () => void signOut() : () => void signIn()}>
